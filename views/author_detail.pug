@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+    h1 Author: #{author.name}
+    p #{author.lifespan}
+
+    div(style='margin-left:20px;margin-top:20px;')
+        h4 Books
+
+        each val in books 
+            a(href=val.url) #{val.title}
+            p #{val.summary}
+        
+        else 
+            p This author has no books.
