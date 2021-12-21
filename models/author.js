@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const {DateTime} = require('luxon');
 
 var Schema = mongoose.Schema;
 
@@ -31,6 +32,24 @@ AuthorSchema
 AuthorSchema.virtual('lifespan').get(function() {
   var lifetime_string = '';
   if (this.date_of_birth) {
+    lifetime_string = '(' + DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED);
+  }
+  lifetime_string += ' - ';
+  if (this.date_of_death) {
+    lifetime_string += DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED) + ')';
+  } else {
+    lifetime_string += ')';
+  }
+
+  if (!this.date_of_birth && !this.date_of_death) {
+    return '';
+  }
+
+  return lifetime_string;
+});
+/* AuthorSchema.virtual('lifespan').get(function() {
+  var lifetime_string = '';
+  if (this.date_of_birth) {
     lifetime_string = this.date_of_birth.getYear().toString();
   }
   lifetime_string += ' - ';
@@ -38,7 +57,7 @@ AuthorSchema.virtual('lifespan').get(function() {
     lifetime_string += this.date_of_death.getYear()
   }
   return lifetime_string;
-});
+}); */
 
 // Virtual for author's URL
 AuthorSchema
