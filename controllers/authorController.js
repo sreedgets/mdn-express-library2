@@ -147,8 +147,25 @@ exports.author_delete_post = function(req, res, next) {
 };
 
 // Display Author update form on GET.
-exports.author_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author update GET');
+exports.author_update_get = function(req, res, next) {
+    Author.findById(req.params.id, (err, author) => {
+        if (err) { return next(err); }
+
+        let newDate = new Date(author.date_of_birth);
+        let newerDate = newDate.toDateString();
+
+        let newAuthor = {
+            ...author,
+            date_of_birth: newerDate
+        }
+
+        
+        res.render('author_form', {
+            title: 'Update Author',
+            author: newAuthor
+        });
+        /* res.send(newerDate); */
+    });
 };
 
 // Handle Author update on POST.
