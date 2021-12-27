@@ -207,12 +207,14 @@ exports.book_update_get = function(req, res, next) {
 exports.book_update_post = [
     (req, res, next) => {
         if (!(req.body.genre instanceof Array)) {
-            if (req.body.genre === 'undefined') {
+            if (typeof req.body.genre === 'undefined') {
                 req.body.genre = [];
             } else {
                 req.body.genre = new Array(req.body.genre);
             }
         }
+
+        next();
     },
     body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),
     body('author', 'Author must not be empty.').trim().isLength({ min: 1 }).escape(),
@@ -255,8 +257,8 @@ exports.book_update_post = [
                 });
             });
         } else {
-            Book.findByIdAndUpdate(req.params.id, book, {}, (err, theBook) => {
-                if (err) {return next(err)}
+            Book.findByIdAndUpdate(req.params.id, book, {}, (err, thebook) => {
+                if (err) {return next(err); }
                 res.redirect(thebook.url);
             });
         }
