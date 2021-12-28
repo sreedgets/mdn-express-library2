@@ -164,9 +164,6 @@ exports.author_update_get = function(req, res, next) {
 };
 
 // Handle Author update on POST.
-/* exports.author_update_post = function(req, res) {
-    res.send(req.body);
-}; */
 exports.author_update_post = [
     body('first_name').trim().isLength({min:1}).escape().withMessage('First name must be specified.')
         .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
@@ -198,7 +195,7 @@ exports.author_update_post = [
                 if (err) { return next(err); }
 
                 res.redirect(theAuthor.url);
-            })
+            });
         }
     }
 ];
