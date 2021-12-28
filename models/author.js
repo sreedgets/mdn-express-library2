@@ -47,23 +47,24 @@ AuthorSchema.virtual('lifespan').get(function() {
 
   return lifetime_string;
 });
-/* AuthorSchema.virtual('lifespan').get(function() {
-  var lifetime_string = '';
-  if (this.date_of_birth) {
-    lifetime_string = this.date_of_birth.getYear().toString();
-  }
-  lifetime_string += ' - ';
-  if (this.date_of_death) {
-    lifetime_string += this.date_of_death.getYear()
-  }
-  return lifetime_string;
-}); */
 
 // Virtual for author's URL
 AuthorSchema
 .virtual('url')
 .get(function () {
   return '/catalog/author/' + this._id;
+});
+
+AuthorSchema
+.virtual('dob')
+.get(function () {
+  return DateTime.fromJSDate(this.date_of_birth).toISODate();
+});
+
+AuthorSchema
+.virtual('dod')
+.get(function() {
+  return DateTime.fromJSDate(this.date_of_death).toISODate();
 });
 
 //Export model
